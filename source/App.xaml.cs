@@ -1,12 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,37 +7,94 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
 
 namespace Presenter
 {
     /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
+    /// Stellt das anwendungsspezifische Verhalten bereit, um die Standardanwendungsklasse zu ergänzen.
     /// </summary>
-    public partial class App : Application
+    sealed partial class App : Application
     {
         /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
+        /// Initialisiert das Singletonanwendungsobjekt. Dies ist die erste Zeile von erstelltem Code
+        /// und daher das logische Äquivalent von main() bzw. WinMain().
         /// </summary>
         public App()
         {
             this.InitializeComponent();
+            this.Suspending += OnSuspending;
         }
 
         /// <summary>
-        /// Invoked when the application is launched normally by the end user.  Other entry points
-        /// will be used such as when the application is launched to open a specific file.
+        /// Wird aufgerufen, wenn die Anwendung durch den Endbenutzer normal gestartet wird. Weitere Einstiegspunkte
+        /// werden z. B. verwendet, wenn die Anwendung gestartet wird, um eine bestimmte Datei zu öffnen.
         /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        /// <param name="e">Details über Startanforderung und -prozess.</param>
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            m_window = new MainWindow();
-            m_window.Activate();
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            // App-Initialisierung nicht wiederholen, wenn das Fenster bereits Inhalte enthält.
+            // Nur sicherstellen, dass das Fenster aktiv ist.
+            if (rootFrame == null)
+            {
+                // Frame erstellen, der als Navigationskontext fungiert und zum Parameter der ersten Seite navigieren
+                rootFrame = new Frame();
+
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                {
+                    //TODO: Zustand von zuvor angehaltener Anwendung laden
+                }
+
+                // Den Frame im aktuellen Fenster platzieren
+                Window.Current.Content = rootFrame;
+            }
+
+            if (e.PrelaunchActivated == false)
+            {
+                if (rootFrame.Content == null)
+                {
+                    // Wenn der Navigationsstapel nicht wiederhergestellt wird, zur ersten Seite navigieren
+                    // und die neue Seite konfigurieren, indem die erforderlichen Informationen als Navigationsparameter
+                    // übergeben werden
+                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                }
+                // Sicherstellen, dass das aktuelle Fenster aktiv ist
+                Window.Current.Activate();
+            }
         }
 
-        private Window m_window;
+        /// <summary>
+        /// Wird aufgerufen, wenn die Navigation auf eine bestimmte Seite fehlschlägt
+        /// </summary>
+        /// <param name="sender">Der Rahmen, bei dem die Navigation fehlgeschlagen ist</param>
+        /// <param name="e">Details über den Navigationsfehler</param>
+        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        }
+
+        /// <summary>
+        /// Wird aufgerufen, wenn die Ausführung der Anwendung angehalten wird.  Der Anwendungszustand wird gespeichert,
+        /// ohne zu wissen, ob die Anwendung beendet oder fortgesetzt wird und die Speicherinhalte dabei
+        /// unbeschädigt bleiben.
+        /// </summary>
+        /// <param name="sender">Die Quelle der Anhalteanforderung.</param>
+        /// <param name="e">Details zur Anhalteanforderung.</param>
+        private void OnSuspending(object sender, SuspendingEventArgs e)
+        {
+            var deferral = e.SuspendingOperation.GetDeferral();
+            //TODO: Anwendungszustand speichern und alle Hintergrundaktivitäten beenden
+            deferral.Complete();
+        }
     }
 }

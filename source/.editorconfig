@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS4014: Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
+dotnet_diagnostic.CS4014.severity = none
