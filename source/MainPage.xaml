@@ -6,27 +6,72 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:control="using:Microsoft.UI.Xaml.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     >
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="13*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+        <muxc:NavigationView x:Name="NavView"
+                         PaneDisplayMode="Top"
+                         Loaded="NavView_Loaded"
+                         ItemInvoked="NavView_ItemInvoked"
+                         BackRequested="NavView_BackRequested">
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Tag="slides_page" Icon="Slideshow" Content="Folien"/>
+                <muxc:NavigationViewItemSeparator/>
+                <muxc:NavigationViewItemHeader x:Name="MainPagesHeader"
+                                           Content="Programmablauf"/>
+                <muxc:NavigationViewItemSeparator/>
+                <muxc:NavigationViewItem Tag="bible_page" Content="Bibeltext">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE736;"/>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Tag="song_page" Icon="Audio" Content="Lieder"/>
+                <muxc:NavigationViewItem Tag="picture_page" Content="Bilder">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB9F;"/>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Tag="powerpoint_page" Content="PowerPoint">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource PowerPointFont}" Glyph="&#xEF72;"/>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+            </muxc:NavigationView.MenuItems>
 
-        <TextBox Name="addressBar" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <Button x:Name="myButton" Grid.Column="2" Click="myButton_Click" HorizontalAlignment="Center" Height="32" Width="42">Go</Button>
+            <muxc:NavigationView.AutoSuggestBox>
+                <!-- See AutoSuggestBox documentation for
+                 more info about how to implement search. -->
+                <AutoSuggestBox x:Name="NavViewSearchBox" QueryIcon="Find"/>
+            </muxc:NavigationView.AutoSuggestBox>
 
-        <Button x:Name="newWindows" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" Margin="10,0,10,0" Click="newWindows_Click">Neues Fenster</Button>
-        
-        <control:WebView2 x:Name="MyWebView" Grid.Row="1" Grid.ColumnSpan="2"
-            Source="https://www.microsoft.com" Grid.Column="1" Margin="0,0,0,0"/>
+            <ScrollViewer>
+                <Grid>
+                    <TextBlock x:Name="testB" Text="" FontFamily="{StaticResource PowerPointFont}"/>
+                <Frame x:Name="ContentFrame" Padding="12,0,12,24" IsTabStop="True"
+                   NavigationFailed="ContentFrame_NavigationFailed"/>
+                </Grid>
+            </ScrollViewer>
+        </muxc:NavigationView>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger
+                        MinWindowWidth="{x:Bind NavViewCompactModeThresholdWidth}"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                         <!--Remove the next 3 lines for left-only navigation.--> 
+                        <Setter Target="NavView.PaneDisplayMode" Value="Top"/>
+                        <Setter Target="NavViewSearchBox.Width" Value="200"/>
+                        <Setter Target="MainPagesHeader.Visibility" Value="Collapsed"/>
+                         <!--Leave the next line for left-only navigation.--> 
+                        <Setter Target="ContentFrame.Padding" Value="24,0,24,24"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

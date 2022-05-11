@@ -7,6 +7,9 @@
         <controls:XamlControlsResources>
             <controls:XamlControlsResources.MergedDictionaries>
                 <!-- Other app resources here -->
+                <ResourceDictionary>
+                    <FontFamily x:Key="PowerPointFont">ms-appx:///Assets/Fonts/fabric-icons.woff#Fabric MDL2 Assets</FontFamily>
+                </ResourceDictionary>
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>
     </Application.Resources>
