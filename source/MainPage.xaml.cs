@@ -49,6 +49,7 @@ namespace Presenter
             ("bible_page", typeof(BiblePage)),
             ("song_page", typeof(SongPage)),
             ("picture_page", typeof(PicturePage)),
+            ("powerpoint_page", typeof(PowerPointPage)),
         };
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)
