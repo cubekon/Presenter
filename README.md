@@ -12,3 +12,7 @@ Eine Open Source Präsentationssoftware speziell für Kirchengemeinden
 [Anzeigen mehrerer Ansichten mit ApplicationView](https://docs.microsoft.com/de-de/windows/apps/design/layout/application-view)
 
 [NavigationView](https://docs.microsoft.com/de-de/windows/apps/design/controls/navigationview)
+
+[Wie kann man benutzerdefinierte Schriftarten in UWP anwenden?](https://stackoverflow.com/questions/23971356/how-to-use-a-custom-font-with-windows-universal-app)
+
+[Behandeln des Anhaltens von Apps](https://docs.microsoft.com/de-de/windows/uwp/launch-resume/suspend-an-app)
