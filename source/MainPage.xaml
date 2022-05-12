@@ -7,44 +7,101 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     >
-
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.ColumnSpan="3" x:Name="AppTitleBar" Background="Transparent">
+            <!-- Width of the padding columns is set in LayoutMetricsChanged handler. -->
+            <!-- Using padding columns instead of Margin ensures that the background
+                 paints the area under the caption control buttons (for transparent buttons). -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
+                <ColumnDefinition/>
+                <ColumnDefinition x:Name="RightPaddingColumn" Width="0"/>
+            </Grid.ColumnDefinitions>
+            <Image Source="Assets/StoreLogo.png" 
+                   Grid.Column="1"
+                   HorizontalAlignment="Left"
+                   Width="16" Height="16"
+                   Margin="16,0,0,0"/>
+            <TextBlock x:Name="AppTitleTextBlock"
+                       Text="{StaticResource AppTitle}"
+                       Style="{StaticResource CaptionTextBlockStyle}" 
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Margin="42,0,0,0"/>
+        </Grid>
+
+        <!-- This control has a higher z-order than AppTitleBar, 
+             so it receives user input. -->
+        <!-- Global Search -->
+        <AutoSuggestBox x:Name="GlobalSearch"
+                        QueryIcon="Find"
+                        PlaceholderText="{StaticResource AppTitleBarSearchHint}"
+                        IsTabStop="True"
+                        Margin="0,2,0,0"
+                        Width="Auto"
+                        MaxWidth="260"
+                        Height="32"
+                        Grid.Column="1"/>
+
         <muxc:NavigationView x:Name="NavView"
                          PaneDisplayMode="Left"
                          Loaded="NavView_Loaded"
                          ItemInvoked="NavView_ItemInvoked"
-                         BackRequested="NavView_BackRequested">
+                         BackRequested="NavView_BackRequested"
+                         IsBackButtonVisible="Visible"
+                         PaneTitle="{StaticResource NavigationTitle}"
+                         OpenPaneLength="260"
+                         Grid.Row="1"
+                         Grid.ColumnSpan="3">
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem Tag="slides_page" Icon="Slideshow" Content="Folien"/>
+                <muxc:NavigationViewItem Tag="slides_page" Icon="Slideshow" Content="{StaticResource NavItemSlides}"/>
+
                 <muxc:NavigationViewItemSeparator/>
-                <muxc:NavigationViewItemHeader x:Name="MainPagesHeader"
-                                           Content="Programmablauf"/>
+
+                <muxc:NavigationViewItemHeader x:Name="NavItemProgramHeader"
+                                           Content="{StaticResource NavItemProgram}"/>
                 <muxc:NavigationViewItemSeparator/>
-                <muxc:NavigationViewItem Tag="bible_page" Content="Bibeltext">
+
+                <muxc:NavigationViewItem Tag="bible_page" Content="{StaticResource NavItemBible}">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE736;"/>
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem Tag="song_page" Icon="Audio" Content="Lieder"/>
-                <muxc:NavigationViewItem Tag="picture_page" Content="Bilder">
+
+                <muxc:NavigationViewItem Tag="song_page" Icon="Audio" Content="{StaticResource NavItemSongs}"/>
+
+                <muxc:NavigationViewItem Tag="picture_page" Content="{StaticResource NavItemPictures}">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB9F;"/>
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem Tag="powerpoint_page" Content="PowerPoint">
+
+                <muxc:NavigationViewItem Tag="powerpoint_page" Content="{StaticResource NavItemPowerPoint}">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource PowerPointFont}" Glyph="&#xEF72;"/>
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>
 
-            <muxc:NavigationView.AutoSuggestBox>
-                <!-- See AutoSuggestBox documentation for
+            <!--<muxc:NavigationView.AutoSuggestBox>
+                -->
+            <!-- See AutoSuggestBox documentation for
                  more info about how to implement search. -->
+            <!--
                 <AutoSuggestBox x:Name="NavViewSearchBox" QueryIcon="Find"/>
-            </muxc:NavigationView.AutoSuggestBox>
+            </muxc:NavigationView.AutoSuggestBox>-->
 
             <ScrollViewer>
                 <Frame x:Name="ContentFrame" IsTabStop="True"

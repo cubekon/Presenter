@@ -41,6 +41,16 @@
                     </ResourceDictionary.ThemeDictionaries>
 
                     <!--Strings-->
+                    <x:String x:Key="AppTitle">Presenter</x:String>
+                    <x:String x:Key="AppTitleBarSearchHint">Globale Suche (STRG + F)</x:String>
+                    <x:String x:Key="NavigationTitle">Navigation</x:String>
+                    <x:String x:Key="NavItemSlides">Folien</x:String>
+                    <x:String x:Key="NavItemProgram">Programmablauf</x:String>
+                    <x:String x:Key="NavItemBible">Bibeltext</x:String>
+                    <x:String x:Key="NavItemSongs">Lieder</x:String>
+                    <x:String x:Key="NavItemPictures">Bilder</x:String>
+                    <x:String x:Key="NavItemPowerPoint">PowerPoint</x:String>
+                    <x:String x:Key="SettingsHeader">Einstellungen</x:String>
 
                     <!--Doubles-->
                     <x:Double x:Key="TeachingTipMinWidth">50</x:Double>

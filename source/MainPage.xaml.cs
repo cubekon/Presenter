@@ -20,6 +20,8 @@ using Windows.UI.Xaml.Controls;
 using muxc = Microsoft.UI.Xaml.Controls;
 using Windows.System;
 using Presenter.Views;
+using Windows.UI;
+using System.Diagnostics;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x407 dokumentiert.
 namespace Presenter
@@ -27,7 +29,7 @@ namespace Presenter
     /// <summary>
     /// Eine leere Seite, die eigenständig verwendet oder zu der innerhalb eines Rahmens navigiert werden kann.
     /// </summary>
-#pragma warning disable CS1998 // WebView2 prerelease warning
+#pragma warning disable CS1998 // suppress WebView2 prerelease warning
     public sealed partial class MainPage : Page
     {
         public static MainPage Current;
@@ -35,11 +37,79 @@ namespace Presenter
 
         private double NavViewCompactModeThresholdWidth { get { return NavView.CompactModeThresholdWidth; } }
 
+        // Custom Title Bar
+        private CoreApplicationViewTitleBar coreTitleBar;
+
         public MainPage()
         {
             this.InitializeComponent();
+
+            #region Custom Title Bar
+            // Hide default title bar.
+            coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+
+            // Set caption buttons background to transparent.
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonBackgroundColor = Colors.Transparent;
+
+            // Set XAML element as a drag region.
+            Window.Current.SetTitleBar(AppTitleBar);
+
+            // Register a handler for when the size of the overlaid caption control changes.
+            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
+
+            // Register a handler for when the title bar visibility changes.
+            // For example, when the title bar is invoked in full screen mode.
+            coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
+
+            // Register a handler for when the window activation changes.
+            Window.Current.CoreWindow.Activated += CoreWindow_Activated;
+            #endregion
+
+            ContentFrame.Focus(FocusState.Keyboard);
         }
 
+        #region Custom Title Bar Events
+        private void CoreWindow_Activated(CoreWindow sender, WindowActivatedEventArgs args)
+        {
+            // Change App Bar Background and Foreground color when window loses focus | match system colors
+            UISettings settings = new UISettings();
+            if (args.WindowActivationState == CoreWindowActivationState.Deactivated)
+            {
+                AppTitleTextBlock.Foreground =
+                   new SolidColorBrush(settings.UIElementColor(UIElementType.GrayText));
+                AppTitleBar.Background = new SolidColorBrush(settings.UIElementColor(UIElementType.Window));
+            }
+            else
+            {
+                AppTitleTextBlock.Foreground =
+                   new SolidColorBrush(settings.UIElementColor(UIElementType.WindowText));
+                AppTitleBar.Background = new SolidColorBrush(Colors.Transparent);
+            }
+        }
+
+        private void CoreTitleBar_IsVisibleChanged(CoreApplicationViewTitleBar sender, object args)
+        {
+            if (sender.IsVisible)
+            {
+                AppTitleBar.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AppTitleBar.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+        {
+            // Get the size of the caption controls and set padding.
+            LeftPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayLeftInset);
+            RightPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayRightInset);
+        }
+        #endregion
+
+        #region Navigation Event/ Methods
         private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
@@ -174,7 +244,7 @@ namespace Presenter
             {
                 // SettingsItem is not part of NavView.MenuItems, and doesn't have a Tag.
                 NavView.SelectedItem = (muxc.NavigationViewItem)NavView.SettingsItem;
-                NavView.Header = "Einstellungen";
+                NavView.Header = (string)Application.Current.Resources["SettingsHeader"];
             }
             else if (ContentFrame.SourcePageType != null)
             {
@@ -188,5 +258,6 @@ namespace Presenter
                     ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
             }
         }
+        #endregion
     }
 }
