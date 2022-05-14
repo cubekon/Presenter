@@ -25,6 +25,8 @@ Eine Open Source Präsentationssoftware speziell für Kirchengemeinden
 
 [Anpassen der Titelleiste](https://docs.microsoft.com/de-de/windows/apps/develop/title-bar)
 
+[Mica-Material (Custom Title Bar)](https://docs.microsoft.com/de-de/windows/apps/design/style/mica)
+
 
 ## GitHub Links
 [Windows task snippets](https://github.com/Microsoft/Windows-task-snippets)

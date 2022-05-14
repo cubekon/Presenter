@@ -10,61 +10,59 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     >
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="1.2*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.ColumnSpan="3" x:Name="AppTitleBar" Background="Transparent">
-            <!-- Width of the padding columns is set in LayoutMetricsChanged handler. -->
-            <!-- Using padding columns instead of Margin ensures that the background
-                 paints the area under the caption control buttons (for transparent buttons). -->
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
-                <ColumnDefinition/>
-                <ColumnDefinition x:Name="RightPaddingColumn" Width="0"/>
-            </Grid.ColumnDefinitions>
-            <Image Source="Assets/StoreLogo.png" 
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   Width="16" Height="16"
-                   Margin="16,0,0,0"/>
-            <TextBlock x:Name="AppTitleTextBlock"
-                       Text="{StaticResource AppTitle}"
-                       Style="{StaticResource CaptionTextBlockStyle}" 
-                       Grid.Column="1"
-                       VerticalAlignment="Center"
-                       Margin="42,0,0,0"/>
-        </Grid>
 
+    <Page.Resources>
+        <!--This top margin is the height of the custom TitleBar-->
+        <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
+        <Thickness x:Key="NavigationViewContentGridBorderThickness">1,1,0,0</Thickness>
+        <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent"></SolidColorBrush>
+    </Page.Resources>
+    <Grid>
+        <Border x:Name="AppTitleBar"
+                IsHitTestVisible="True"
+                VerticalAlignment="Top"
+                Background="Transparent"
+                Height="40"
+                Canvas.ZIndex="1" 
+                Margin="48,4,0,0">
+            <StackPanel Orientation="Horizontal">
+                <!--<Image x:Name="AppFontIcon"
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center"
+                    Source="Assets/Square44x44Logo.png" 
+                    Width="16" 
+                    Height="16"/>-->
+                <TextBlock x:Name="AppTitle"
+                    Text="{StaticResource AppTitle}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource CaptionTextBlockStyle}" />
+            </StackPanel>
+        </Border>
         <!-- This control has a higher z-order than AppTitleBar, 
              so it receives user input. -->
         <!-- Global Search -->
-        <AutoSuggestBox x:Name="GlobalSearch"
-                        QueryIcon="Find"
-                        PlaceholderText="{StaticResource AppTitleBarSearchHint}"
-                        IsTabStop="True"
-                        Margin="0,2,0,0"
-                        Width="Auto"
-                        MaxWidth="260"
-                        Height="32"
-                        Grid.Column="1"/>
-
         <muxc:NavigationView x:Name="NavView"
                          PaneDisplayMode="Left"
+                             Header="Test"
                          Loaded="NavView_Loaded"
                          ItemInvoked="NavView_ItemInvoked"
                          BackRequested="NavView_BackRequested"
                          IsBackButtonVisible="Visible"
+                         IsTabStop="True"
                          PaneTitle="{StaticResource NavigationTitle}"
                          OpenPaneLength="260"
-                         Grid.Row="1"
-                         Grid.ColumnSpan="3">
+                         Grid.Row="0"
+                             Grid.RowSpan="2"
+                         Grid.ColumnSpan="3" IsTitleBarAutoPaddingEnabled="False">
+            <muxc:NavigationView.Resources>
+                <SolidColorBrush x:Key="NavigationViewContentBackground" Color="#f4f4f4" >
+                </SolidColorBrush>
+                <x:Double x:Key="NavigationViewTopPaneHeight">100</x:Double>
+            </muxc:NavigationView.Resources>
+
+            <muxc:NavigationView.PaneHeader>
+                <Border x:Name="test" Background="Aqua" Margin="20"/>
+            </muxc:NavigationView.PaneHeader>
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem Tag="slides_page" Icon="Slideshow" Content="{StaticResource NavItemSlides}"/>
 
@@ -103,10 +101,23 @@
                 <AutoSuggestBox x:Name="NavViewSearchBox" QueryIcon="Find"/>
             </muxc:NavigationView.AutoSuggestBox>-->
 
-            <ScrollViewer>
-                <Frame x:Name="ContentFrame" IsTabStop="True"
-                   NavigationFailed="ContentFrame_NavigationFailed"/>
-            </ScrollViewer>
+            <muxc:NavigationView.Content>
+                <ScrollViewer Padding="48">
+                    <Frame x:Name="ContentFrame" IsTabStop="True"
+                       NavigationFailed="ContentFrame_NavigationFailed"/>
+                </ScrollViewer>
+            </muxc:NavigationView.Content>
+
+            <muxc:NavigationView.AutoSuggestBox>
+                <AutoSuggestBox x:Name="GlobalSearch"
+                        QueryIcon="Find"
+                        PlaceholderText="{StaticResource AppTitleBarSearchHint}"
+                        IsTabStop="True"
+                        Margin="0,2,0,0"
+                        Width="Auto"
+                        MaxWidth="260"
+                        Height="32"/>
+            </muxc:NavigationView.AutoSuggestBox>
         </muxc:NavigationView>
 
         <VisualStateManager.VisualStateGroups>

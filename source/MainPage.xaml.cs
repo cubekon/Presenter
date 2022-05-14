@@ -77,15 +77,15 @@ namespace Presenter
             UISettings settings = new UISettings();
             if (args.WindowActivationState == CoreWindowActivationState.Deactivated)
             {
-                AppTitleTextBlock.Foreground =
+                AppTitle.Foreground =
                    new SolidColorBrush(settings.UIElementColor(UIElementType.GrayText));
-                AppTitleBar.Background = new SolidColorBrush(settings.UIElementColor(UIElementType.Window));
+                //AppTitleBar.Background = new SolidColorBrush(settings.UIElementColor(UIElementType.Window));
             }
             else
             {
-                AppTitleTextBlock.Foreground =
+                AppTitle.Foreground =
                    new SolidColorBrush(settings.UIElementColor(UIElementType.WindowText));
-                AppTitleBar.Background = new SolidColorBrush(Colors.Transparent);
+                //AppTitleBar.Background = new SolidColorBrush(Colors.Transparent);
             }
         }
 
@@ -104,8 +104,8 @@ namespace Presenter
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
             // Get the size of the caption controls and set padding.
-            LeftPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayLeftInset);
-            RightPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayRightInset);
+            //LeftPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayLeftInset);
+            //RightPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayRightInset);
         }
         #endregion
 
