@@ -62,7 +62,7 @@
 
                     <!--Strings-->
                     <x:String x:Key="AppTitle">Presenter</x:String>
-                    <x:String x:Key="AppTitleBarSearchHint">Globale Suche (STRG + F)</x:String>
+                    <x:String x:Key="AppTitleBarSearchHint">Suche (STRG + F)</x:String>
                     <x:String x:Key="NavigationTitle">Navigation</x:String>
                     <x:String x:Key="NavItemSlides">Folien</x:String>
                     <x:String x:Key="NavItemProgram">Programmablauf</x:String>
