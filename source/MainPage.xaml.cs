@@ -86,6 +86,13 @@ namespace Presenter
             ContentFrame.Focus(FocusState.Keyboard);
 
             Current = this;
+
+            this.Loaded += MainPage_Loaded;
+        }
+
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateTitleBarDragArea();
         }
 
         #region Custom Title Bar Events
@@ -103,7 +110,8 @@ namespace Presenter
             {
                 AppTitle.Foreground =
                    new SolidColorBrush(settings.UIElementColor(UIElementType.WindowText));
-                //AppTitleBar.Background = new SolidColorBrush(Colors.Transparent);
+                
+                AppTitleBar.Background = new SolidColorBrush(Colors.Transparent);
             }
         }
 
@@ -121,6 +129,7 @@ namespace Presenter
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
+            UpdateTitleBarDragArea();
             // Get the size of the caption controls and set padding.
             //LeftPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayLeftInset);
             //RightPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayRightInset);
@@ -173,8 +182,7 @@ namespace Presenter
             SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
         }
 
-        private void NavigationViewControl_ItemInvoked(muxc.NavigationView sender,
-                                         muxc.NavigationViewItemInvokedEventArgs args)
+        private void NavigationViewControl_ItemInvoked(muxc.NavigationView sender, muxc.NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked == true)
             {
@@ -182,8 +190,16 @@ namespace Presenter
             }
             else if (args.InvokedItemContainer != null)
             {
-                var navItemTag = args.InvokedItemContainer.Tag.ToString();
-                NavigationViewControl_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
+                // Is null when NavItem is grouped together
+                if (args.InvokedItemContainer.Tag != null)
+                {
+                    var navItemTag = args.InvokedItemContainer.Tag.ToString();
+                    NavigationViewControl_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
+                }
+                else
+                {
+                    // possible grouped NavItems
+                }
             }
         }
 
@@ -210,8 +226,7 @@ namespace Presenter
             }
         }
 
-        private void NavigationViewControl_BackRequested(muxc.NavigationView sender,
-                                           muxc.NavigationViewBackRequestedEventArgs args)
+        private void NavigationViewControl_BackRequested(muxc.NavigationView sender, muxc.NavigationViewBackRequestedEventArgs args)
         {
             TryGoBack();
         }
@@ -286,6 +301,9 @@ namespace Presenter
 
         private void CtrlF_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
+            // Open the Pane in case the navwie is collapsed
+            NavigationViewControl.IsPaneOpen = true;
+
             this.GlobalSearch.Focus(FocusState.Programmatic);
         }
 
@@ -293,21 +311,27 @@ namespace Presenter
         {
             var navigationView = sender;
             Debug.WriteLine(sender.DisplayMode);
-            MainPage.Current.AppTitleBar.Visibility = navigationView.DisplayMode == muxc.NavigationViewDisplayMode.Minimal ? Visibility.Collapsed : Visibility.Visible;
+            MainPage.Current.AppTitle.Visibility = navigationView.DisplayMode == muxc.NavigationViewDisplayMode.Minimal ? Visibility.Collapsed : Visibility.Visible;
 
-            //if (MainPage.Current.PageHeader != null)
-            //{
-            //    if (navigationView.DisplayMode == muxc.NavigationViewDisplayMode.Expanded)
-            //    {
-            //        Resources["NavigationViewHeaderMargin"] = new Thickness(-15, 15, 0, 0);
-            //    }
-            //    else
-            //    {
-            //        Resources["NavigationViewHeaderMargin"] = new Thickness(30, 15, 0, 0);
-            //        //MainPage.Current.PageHeader.Margin = new Thickness(0,15,0,0);
-            //    }
-            //    Debug.WriteLine(App.Current.Resources["NavigationViewHeaderMargin"]);
-            //}
+            UpdateTitleBarDragArea();
+        }
+
+        private void UpdateTitleBarDragArea()
+        {
+            if (MainPage.Current.PageHeader != null)
+            {
+                if (NavigationViewControl.DisplayMode == muxc.NavigationViewDisplayMode.Minimal)
+                {
+                    //Resources["NavigationViewHeaderMargin"] = new Thickness(30, 15, 0, 0);
+                    MainPage.Current.AppTitleBar.Margin = new Thickness(80, 0, 0, 0);
+                }
+                else
+                {
+                    //Resources["NavigationViewHeaderMargin"] = new Thickness(0, 15, 0, 0);
+                    MainPage.Current.AppTitleBar.Margin = new Thickness(48, 0, 0, 0);
+                    //MainPage.Current.PageHeader.Margin = new Thickness(0,15,0,0);
+                }
+            }
         }
     }
 }

@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="Transparent">
 
-    <Grid>
-
+    <Grid Background="#f9f9f9" CornerRadius="10">
+        <!--<TextBlock>Test</TextBlock>-->
     </Grid>
 </Page>

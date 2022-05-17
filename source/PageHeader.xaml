@@ -11,7 +11,7 @@
     x:Name="headerControl"
     d:DesignHeight="50"
     d:DesignWidth="700">
-    <Grid x:Name="headerRoot" Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Padding="{Binding ElementName=headerControl, Path=Padding}" VerticalAlignment="Top">
+    <Grid x:Name="headerRoot" Background="White" Padding="{Binding ElementName=headerControl, Path=Padding}" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />

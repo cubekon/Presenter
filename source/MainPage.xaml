@@ -22,7 +22,7 @@
                     <Thickness x:Key="NavigationViewContentMargin">0,40,0,0</Thickness>
 
                     <!--Override Hader Default Margin-->
-                    <Thickness x:Key="NavigationViewHeaderMargin">30,15,0,0</Thickness>
+                    <!--<Thickness x:Key="NavigationViewHeaderMargin">30,15,0,0</Thickness>-->
                     <Thickness x:Key="NavigationViewContentGridBorderThickness">1,1,0,0</Thickness>
                     <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent"></SolidColorBrush>
                 </ResourceDictionary>
@@ -35,7 +35,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    
+
     <Grid>
         <Border x:Name="AppTitleBar"
                 IsHitTestVisible="True"
@@ -72,8 +72,10 @@
                              PaneTitle="{StaticResource NavigationTitle}"
                              OpenPaneLength="260"
                              IsTitleBarAutoPaddingEnabled="False">
+
+            <!-- Content Frame Background -->
             <muxc:NavigationView.Resources>
-                <SolidColorBrush x:Key="NavigationViewContentBackground" Color="#f4f4f4" >
+                <SolidColorBrush x:Key="NavigationViewContentBackground" Color="White" >
                 </SolidColorBrush>
                 <x:Double x:Key="NavigationViewTopPaneHeight">100</x:Double>
             </muxc:NavigationView.Resources>
@@ -85,9 +87,6 @@
                                 PlaceholderText="{StaticResource AppTitleBarSearchHint}"
                                 Width="Auto"
                                 Height="32">
-                    <AutoSuggestBox.KeyboardAccelerators>
-                        <KeyboardAccelerator Modifiers="Control" Key="F" Invoked="CtrlF_Invoked"/>
-                    </AutoSuggestBox.KeyboardAccelerators>
                 </AutoSuggestBox>
             </muxc:NavigationView.AutoSuggestBox>
 
@@ -124,7 +123,7 @@
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC4F;"/>
                     </muxc:NavigationViewItem.Icon>
-                    
+
                     <muxc:NavigationViewItem.MenuItems>
                         <muxc:NavigationViewItem Content="Create new" Icon="NewFolder" ToolTipService.ToolTip="Create new" Tag="SamplePage5"/>
                         <muxc:NavigationViewItem Content="Upload file" Icon="OpenLocal" ToolTipService.ToolTip="Upload file" Tag="SamplePage6"/>
@@ -134,9 +133,8 @@
             </muxc:NavigationView.MenuItems>
 
             <muxc:NavigationView.Content>
-                <ScrollViewer d:Background="Red">
-                    <Frame x:Name="ContentFrame" Padding="0" Margin="20,15,20,15" IsTabStop="True" d:Content="{local:PageHeader}"
-                       NavigationFailed="ContentFrame_NavigationFailed"/>
+                <ScrollViewer>
+                    <Frame x:Name="ContentFrame" Padding="0" Margin="20,15,20,15" IsTabStop="True" NavigationFailed="ContentFrame_NavigationFailed" d:Content="{local:PageHeader}"/>
                 </ScrollViewer>
             </muxc:NavigationView.Content>
         </muxc:NavigationView>
@@ -154,5 +152,11 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+        
+        <!-- TODO: Fixing Tooltip on Page hover -->
+        <!-- Search Engine Shortcut -->
+        <Grid.KeyboardAccelerators>
+            <KeyboardAccelerator Modifiers="Control" Key="F" Invoked="CtrlF_Invoked"/>
+        </Grid.KeyboardAccelerators>
     </Grid>
 </Page>

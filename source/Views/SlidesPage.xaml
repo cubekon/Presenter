@@ -8,6 +8,16 @@
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     d:Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <!-- Increase FontSize of TabView Heade r-->
+                    <x:Double x:Key="TabViewItemHeaderFontSize">16</x:Double>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
         <Grid.Resources>
@@ -25,10 +35,13 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid x:Name="ProjectorScreenFrame" Grid.Column="1" Grid.ColumnSpan="2" Background="White" CornerRadius="15" Margin="0,0" />
+        
+        <!-- Projector Live Output -->
+        <Grid x:Name="ProjectorScreenFrame" Grid.Column="1" Grid.ColumnSpan="2" Background="#f3f3f3" CornerRadius="15" Margin="30,10,0,10" />
 
-        <Viewbox x:Name="ProjectorViewBox" Stretch="Uniform" StretchDirection="Both" Margin="0,0,10,0" Shadow="{StaticResource SharedShadow}">
+        <Viewbox x:Name="ProjectorViewBox" Stretch="Uniform" StretchDirection="Both" Margin="0" Shadow="{StaticResource SharedShadow}">
             <Grid Background="White" MinHeight="100" CornerRadius="4">
+                <!-- No Picture Template -->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -44,5 +57,37 @@
                 <TextBlock Grid.Row="2" CharacterSpacing="70" Text="KEIN BILD" Foreground="LightGray" FontWeight="SemiLight" TextAlignment="Center" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>
         </Viewbox>
+
+        <!-- TabView Section -->
+        <Grid x:Name="TabViewFrame" Padding="0" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Background="#f3f3f3" CornerRadius="15" Margin="0,20,0,20" >
+            <muxc:TabView Background="Transparent" Padding="4,10,0,0" VerticalAlignment="Stretch">
+                <muxc:TabView.TabItems>
+
+                    <muxc:TabViewItem Header="Lieder">
+                        <muxc:TabViewItem.IconSource>
+                            <muxc:BitmapIconSource UriSource="/Assets/TabViewIcons/change_me.png" ShowAsMonochrome="False" />
+                        </muxc:TabViewItem.IconSource>
+
+                        <muxc:TabViewItem.Content>
+                            <local:SongPage/>
+                        </muxc:TabViewItem.Content>
+                    </muxc:TabViewItem>
+
+                    <muxc:TabViewItem Header="Bibeltext">
+                        <muxc:TabViewItem.IconSource>
+                            <muxc:BitmapIconSource UriSource="/Assets/TabViewIcons/change_me.png" ShowAsMonochrome="False" />
+                        </muxc:TabViewItem.IconSource>
+                    </muxc:TabViewItem>
+                    
+                    <muxc:TabViewItem Header="Bilder">
+                        <muxc:TabViewItem.IconSource>
+                            <muxc:BitmapIconSource UriSource="/Assets/TabViewIcons/change_me.png" ShowAsMonochrome="False" />
+                        </muxc:TabViewItem.IconSource>
+                    </muxc:TabViewItem>
+                    
+                </muxc:TabView.TabItems>
+            </muxc:TabView>
+
+        </Grid>
     </Grid>
 </Page>
