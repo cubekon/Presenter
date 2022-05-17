@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -12,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using muxc = Microsoft.UI.Xaml.Controls;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
 
@@ -25,6 +27,15 @@ namespace Presenter.Views
         public SlidesPage()
         {
             this.InitializeComponent();
+
+            SharedShadow.Receivers.Add(ProjectorScreenFrame);
+
+            ProjectorViewBox.Translation += new Vector3(0, 0, 16);
+
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
         }
     }
 }

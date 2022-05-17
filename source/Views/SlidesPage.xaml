@@ -7,9 +7,42 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    d:Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        
+        <Grid.Resources>
+            <ThemeShadow x:Name="SharedShadow" />
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="300" MaxWidth="500"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MaxHeight="300"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="ProjectorScreenFrame" Grid.Column="1" Grid.ColumnSpan="2" Background="White" CornerRadius="15" Margin="0,0" />
+
+        <Viewbox x:Name="ProjectorViewBox" Stretch="Uniform" StretchDirection="Both" Margin="0,0,10,0" Shadow="{StaticResource SharedShadow}">
+            <Grid Background="White" MinHeight="100" CornerRadius="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.4*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Height="7" VerticalAlignment="Top" Background="{Binding ElementName=ProjectorScreenFrame, Path=BorderBrush}" BorderThickness="0" Orientation="Horizontal" Margin="0,0,0,0">
+                    <Rectangle Fill="Blue" Width="40"/>
+                    <Rectangle Fill="Green" Width="40"/>
+                    <Rectangle Fill="Red" Width="40"/>
+                    <Rectangle Fill="Yellow" Width="40"/>
+                </StackPanel>
+                <FontIcon Grid.Row="1" FontFamily="Segoe MDL2 Assets" Glyph="&#xE790;" Foreground="LightGray" FontWeight="SemiLight"/>
+                <TextBlock Grid.Row="2" CharacterSpacing="70" Text="KEIN BILD" Foreground="LightGray" FontWeight="SemiLight" TextAlignment="Center" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+        </Viewbox>
     </Grid>
 </Page>

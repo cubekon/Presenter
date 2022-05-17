@@ -71,7 +71,14 @@
                     <x:String x:Key="NavItemPictures">Bilder</x:String>
                     <x:String x:Key="NavItemPowerPoint">PowerPoint</x:String>
                     <x:String x:Key="SettingsHeader">Einstellungen</x:String>
-
+                    
+                    <!-- Command Bar Strings -->
+                    <x:String x:Key="CommandBarAdd">Hinzufügen</x:String>
+                    <x:String x:Key="CommandBarEdit">Bearbeiten</x:String>
+                    <x:String x:Key="CommandBarShare">Teilen</x:String>
+                    <x:String x:Key="CommandBarSettings">Einstellungen</x:String>
+                    <x:String x:Key="CommandBarDelete">Entfernen</x:String>
+                    
                     <!--Doubles-->
                     <x:Double x:Key="TeachingTipMinWidth">50</x:Double>
 

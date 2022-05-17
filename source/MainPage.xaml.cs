@@ -17,12 +17,14 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
-using muxc = Microsoft.UI.Xaml.Controls;
 using Windows.System;
 using Presenter.Views;
 using Windows.UI;
 using System.Diagnostics;
+using Presenter.Helper;
 
+using muxc = Microsoft.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x407 dokumentiert.
 namespace Presenter
 {
@@ -35,10 +37,24 @@ namespace Presenter
         public static MainPage Current;
         public static Frame MainFrame = null;
 
-        private double NavViewCompactModeThresholdWidth { get { return NavView.CompactModeThresholdWidth; } }
+        private double NavigationViewControlCompactModeThresholdWidth { get { return NavigationViewControl.CompactModeThresholdWidth; } }
 
         // Custom Title Bar
         private CoreApplicationViewTitleBar coreTitleBar;
+
+        public muxc.NavigationView NavigationView
+        {
+            get { return NavigationViewControl; }
+        }
+
+        // Visual Tree Search eg. for Header from the NavigationViewControl
+        public PageHeader PageHeader
+        {
+            get
+            {
+                return UIHelper.GetDescendantsOfType<PageHeader>(NavigationViewControl).FirstOrDefault();
+            }
+        }
 
         public MainPage()
         {
@@ -68,6 +84,8 @@ namespace Presenter
             #endregion
 
             ContentFrame.Focus(FocusState.Keyboard);
+
+            Current = this;
         }
 
         #region Custom Title Bar Events
@@ -110,6 +128,14 @@ namespace Presenter
         #endregion
 
         #region Navigation Event/ Methods
+
+        private void OnPaneDisplayModeChanged(DependencyObject sender, DependencyProperty dp)
+        {
+            var navigationView = sender as muxc.NavigationView;
+            MainPage.Current.AppTitleBar.Visibility = navigationView.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+
         private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
@@ -125,17 +151,17 @@ namespace Presenter
             ("powerpoint_page", typeof(PowerPointPage)),
         };
 
-        private void NavView_Loaded(object sender, RoutedEventArgs e)
+        private void NavigationViewControl_Loaded(object sender, RoutedEventArgs e)
         {
             // Add handler for ContentFrame navigation.
             ContentFrame.Navigated += On_Navigated;
 
-            // NavView doesn't load any page by default, so load home page.
-            NavView.SelectedItem = NavView.MenuItems[0];
+            // NavigationViewControl doesn't load any page by default, so load home page.
+            NavigationViewControl.SelectedItem = NavigationViewControl.MenuItems[0];
             // If navigation occurs on SelectionChanged, this isn't needed.
             // Because we use ItemInvoked to navigate, we need to call Navigate
-            // here to load the home page.
-            NavView_Navigate("slides_page", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
+            // here to load the slides page.
+            NavigationViewControl_Navigate("slides_page", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
 
             // Listen to the window directly so the app responds
             // to accelerator keys regardless of which element has focus.
@@ -147,23 +173,21 @@ namespace Presenter
             SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
         }
 
-        private void NavView_ItemInvoked(muxc.NavigationView sender,
+        private void NavigationViewControl_ItemInvoked(muxc.NavigationView sender,
                                          muxc.NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked == true)
             {
-                NavView_Navigate("settings_page", args.RecommendedNavigationTransitionInfo);
+                NavigationViewControl_Navigate("settings_page", args.RecommendedNavigationTransitionInfo);
             }
             else if (args.InvokedItemContainer != null)
             {
                 var navItemTag = args.InvokedItemContainer.Tag.ToString();
-                NavView_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
+                NavigationViewControl_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
             }
         }
 
-        private void NavView_Navigate(
-            string navItemTag,
-            Windows.UI.Xaml.Media.Animation.NavigationTransitionInfo transitionInfo)
+        private void NavigationViewControl_Navigate(string navItemTag, NavigationTransitionInfo transitionInfo)
         {
             Type _page = null;
             if (navItemTag == "settings_page")
@@ -186,7 +210,7 @@ namespace Presenter
             }
         }
 
-        private void NavView_BackRequested(muxc.NavigationView sender,
+        private void NavigationViewControl_BackRequested(muxc.NavigationView sender,
                                            muxc.NavigationViewBackRequestedEventArgs args)
         {
             TryGoBack();
@@ -227,9 +251,9 @@ namespace Presenter
                 return false;
 
             // Don't go back if the nav pane is overlayed.
-            if (NavView.IsPaneOpen &&
-                (NavView.DisplayMode == muxc.NavigationViewDisplayMode.Compact ||
-                 NavView.DisplayMode == muxc.NavigationViewDisplayMode.Minimal))
+            if (NavigationViewControl.IsPaneOpen &&
+                (NavigationViewControl.DisplayMode == muxc.NavigationViewDisplayMode.Compact ||
+                 NavigationViewControl.DisplayMode == muxc.NavigationViewDisplayMode.Minimal))
                 return false;
 
             ContentFrame.GoBack();
@@ -238,26 +262,52 @@ namespace Presenter
 
         private void On_Navigated(object sender, NavigationEventArgs e)
         {
-            NavView.IsBackEnabled = ContentFrame.CanGoBack;
+            NavigationViewControl.IsBackEnabled = ContentFrame.CanGoBack;
 
             if (ContentFrame.SourcePageType == typeof(SettingsPage))
             {
-                // SettingsItem is not part of NavView.MenuItems, and doesn't have a Tag.
-                NavView.SelectedItem = (muxc.NavigationViewItem)NavView.SettingsItem;
-                NavView.Header = (string)Application.Current.Resources["SettingsHeader"];
+                // SettingsItem is not part of NavigationViewControl.MenuItems, and doesn't have a Tag.
+                NavigationViewControl.SelectedItem = (muxc.NavigationViewItem)NavigationViewControl.SettingsItem;
+                NavigationViewControl.Header = (string)Application.Current.Resources["SettingsHeader"];
             }
             else if (ContentFrame.SourcePageType != null)
             {
                 var item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
 
-                NavView.SelectedItem = NavView.MenuItems
+                NavigationViewControl.SelectedItem = NavigationViewControl.MenuItems
                     .OfType<muxc.NavigationViewItem>()
                     .First(n => n.Tag.Equals(item.Tag));
 
-                NavView.Header =
-                    ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                NavigationViewControl.Header =
+                    ((muxc.NavigationViewItem)NavigationViewControl.SelectedItem)?.Content?.ToString();
             }
         }
         #endregion
+
+        private void CtrlF_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            this.GlobalSearch.Focus(FocusState.Programmatic);
+        }
+
+        private void NavigationViewControl_DisplayModeChanged(muxc.NavigationView sender, muxc.NavigationViewDisplayModeChangedEventArgs args)
+        {
+            var navigationView = sender;
+            Debug.WriteLine(sender.DisplayMode);
+            MainPage.Current.AppTitleBar.Visibility = navigationView.DisplayMode == muxc.NavigationViewDisplayMode.Minimal ? Visibility.Collapsed : Visibility.Visible;
+
+            //if (MainPage.Current.PageHeader != null)
+            //{
+            //    if (navigationView.DisplayMode == muxc.NavigationViewDisplayMode.Expanded)
+            //    {
+            //        Resources["NavigationViewHeaderMargin"] = new Thickness(-15, 15, 0, 0);
+            //    }
+            //    else
+            //    {
+            //        Resources["NavigationViewHeaderMargin"] = new Thickness(30, 15, 0, 0);
+            //        //MainPage.Current.PageHeader.Margin = new Thickness(0,15,0,0);
+            //    }
+            //    Debug.WriteLine(App.Current.Resources["NavigationViewHeaderMargin"]);
+            //}
+        }
     }
 }
