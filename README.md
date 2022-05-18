@@ -2,7 +2,7 @@
 Eine Open Source Präsentationssoftware speziell für Kirchengemeinden
 
 ## Vorschau
-<img alt="Presenter Anwendung" src="https://github.com/cubekon/Presenter/blob/main/images/presenter_aschkelon.png?raw=true" width="720">
+<img alt="Presenter Anwendung" src="https://github.com/cubekon/Presenter/blob/main/images/Presenter_Aschkelon.png?raw=true" width="720">
 
 ## Linksammlung
 [Erste Schritte mit WebView2 in WinUI 2](https://docs.microsoft.com/de-de/microsoft-edge/webview2/get-started/winui2)
