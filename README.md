@@ -27,6 +27,11 @@ Eine Open Source Präsentationssoftware speziell für Kirchengemeinden
 
 [Mica-Material (Custom Title Bar)](https://docs.microsoft.com/de-de/windows/apps/design/style/mica)
 
+[XAML-Formatvorlagen](https://docs.microsoft.com/de-de/windows/apps/design/style/xaml-styles)
+
+[XAML-Steuerelementvorlagen](https://docs.microsoft.com/de-de/windows/apps/design/style/xaml-control-templates)
+
+[ResourceDictionary- und XAML-Ressourcenreferenzen](https://docs.microsoft.com/de-de/windows/apps/design/style/xaml-resource-dictionary)
 
 ## GitHub Links
 [Windows task snippets](https://github.com/Microsoft/Windows-task-snippets)
