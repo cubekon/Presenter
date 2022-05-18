@@ -28,7 +28,7 @@ namespace Presenter.Views
         {
             this.InitializeComponent();
 
-            SharedShadow.Receivers.Add(ProjectorScreenFrame);
+            SharedShadow.Receivers.Add(DescriptionFrame);
 
             ProjectorViewBox.Translation += new Vector3(0, 0, 16);
 

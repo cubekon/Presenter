@@ -7,11 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     x:Name="headerControl"
     d:DesignHeight="50"
-    d:DesignWidth="700">
-    <Grid x:Name="headerRoot" Background="White" Padding="{Binding ElementName=headerControl, Path=Padding}" VerticalAlignment="Top">
+    d:DesignWidth="700"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+    <Grid x:Name="headerRoot" d:Background="White" Padding="{Binding ElementName=headerControl, Path=Padding}" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />

@@ -108,8 +108,7 @@ namespace Presenter
             }
             else
             {
-                AppTitle.Foreground =
-                   new SolidColorBrush(settings.UIElementColor(UIElementType.WindowText));
+                AppTitle.Foreground = (SolidColorBrush)Application.Current.Resources["PageHeaderForegroundBrush"];
                 
                 AppTitleBar.Background = new SolidColorBrush(Colors.Transparent);
             }

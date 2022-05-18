@@ -13,6 +13,7 @@
                     <!--Themes-->
                     <ResourceDictionary.ThemeDictionaries>
                         <ResourceDictionary x:Key="Light">
+                            <SolidColorBrush x:Key="MainPageBackgroundBrush" Color="#f3f3f3"/>
                             <SolidColorBrush x:Key="HomePageBackgroundBrush" Color="Transparent"/>
                             <SolidColorBrush x:Key="PageHeaderForegroundBrush" Color="Black"/>
                             <StaticResource x:Key="ControlExampleDisplayBrush" ResourceKey="SolidBackgroundFillColorBaseBrush" />
@@ -20,8 +21,17 @@
                             <Thickness x:Key="SearchBoxBorderThickness">0</Thickness>
                             <Thickness x:Key="ControlExampleDisplayBorderThickness">0</Thickness>
                             <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent"/>
+
+                            <!-- Light ProjectorViewBox -->
+                            <SolidColorBrush x:Key="ProjectorViewBoxBackgroundBrush" Color="#fbfbfb"/>
+
+                            <!-- Light DescriptionFrame -->
+                            <SolidColorBrush x:Key="CardBackgroundBrush" Color="#fbfbfb"/>
+                            
                         </ResourceDictionary>
+                        
                         <ResourceDictionary x:Key="Dark">
+                            <SolidColorBrush x:Key="MainPageBackgroundBrush" Color="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
                             <SolidColorBrush x:Key="HomePageBackgroundBrush" Color="Transparent"/>
                             <SolidColorBrush x:Key="PageHeaderForegroundBrush" Color="White"/>
                             <StaticResource x:Key="ControlExampleDisplayBrush" ResourceKey="SolidBackgroundFillColorBaseBrush" />
@@ -29,6 +39,13 @@
                             <Thickness x:Key="SearchBoxBorderThickness">0</Thickness>
                             <Thickness x:Key="ControlExampleDisplayBorderThickness">0</Thickness>
                             <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent"/>
+
+                            <!-- Dark ProjectorViewBox -->
+                            <SolidColorBrush x:Key="ProjectorViewBoxBackgroundBrush" Color="Transparent"/>
+
+                            <!-- Dark DescriptionFrame -->
+                            <SolidColorBrush x:Key="CardBackgroundBrush" Color="#282c31"/>
+                            <SolidColorBrush x:Key="CustomTabBackgroundBrush" Color="#35383d"/>
                         </ResourceDictionary>
                         <ResourceDictionary x:Key="HighContrast">
                             <SolidColorBrush x:Key="HomePageBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
