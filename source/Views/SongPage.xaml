@@ -8,8 +8,8 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
-    Background="{ThemeResource CustomTabBackgroundBrush}">
-
+    d:Background="{ThemeResource RootPageBackgroundBrush}"
+    d:RequestedTheme="Dark">
     <Grid>
         <!--<TextBlock>Test</TextBlock>-->
     </Grid>

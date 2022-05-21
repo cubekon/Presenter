@@ -30,7 +30,7 @@ namespace Presenter.Views
 
             SharedShadow.Receivers.Add(DescriptionFrame);
 
-            ProjectorViewBox.Translation += new Vector3(0, 0, 16);
+            ProjectorViewFrame.Translation += new Vector3(0, 0, 16);
 
         }
 

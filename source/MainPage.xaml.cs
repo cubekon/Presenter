@@ -102,14 +102,14 @@ namespace Presenter
             UISettings settings = new UISettings();
             if (args.WindowActivationState == CoreWindowActivationState.Deactivated)
             {
-                AppTitle.Foreground =
-                   new SolidColorBrush(settings.UIElementColor(UIElementType.GrayText));
-                //AppTitleBar.Background = new SolidColorBrush(settings.UIElementColor(UIElementType.Window));
+                AppTitle.Foreground = (SolidColorBrush)Application.Current.Resources["AppTitleBarInactiveForegroundBrush"];
+                AppTitlePreview.Foreground = (SolidColorBrush)Application.Current.Resources["AppTitleBarPreviewInactiveForegroundBrush"];
             }
             else
             {
-                AppTitle.Foreground = (SolidColorBrush)Application.Current.Resources["PageHeaderForegroundBrush"];
-                
+                AppTitle.Foreground = (SolidColorBrush)Application.Current.Resources["AppTitleBarForegroundBrush"];
+                AppTitlePreview.Foreground = (SolidColorBrush)Application.Current.Resources["AppTitleBarPreviewForegroundBrush"];
+
                 AppTitleBar.Background = new SolidColorBrush(Colors.Transparent);
             }
         }

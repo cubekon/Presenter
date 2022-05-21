@@ -11,8 +11,9 @@
     d:DesignHeight="50"
     d:DesignWidth="700"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    d:RequestedTheme="Dark"
     Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-    <Grid x:Name="headerRoot" d:Background="White" Padding="{Binding ElementName=headerControl, Path=Padding}" VerticalAlignment="Top">
+    <Grid x:Name="headerRoot" Margin="{StaticResource PageHeaderMargin}" Padding="{Binding ElementName=headerControl, Path=Padding}" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
