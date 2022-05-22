@@ -29,6 +29,7 @@
                     <StaticResource x:Key="RootPageBackgroundBrush" ResourceKey="LayerFillColorDefaultBrush"/>
                     <SolidColorBrush x:Key="AppTitleBarForegroundBrush" Color="Black"/>
                     <StaticResource x:Key="GridCardBackgroundBrush" ResourceKey="SolidBackgroundFillColorBaseBrush"/>
+                    <SolidColorBrush x:Key="ThemeSwitchForegroundBrush" Color="#707070"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="Dark">
@@ -37,6 +38,7 @@
                     <StaticResource x:Key="RootPageBackgroundBrush" ResourceKey="LayerFillColorDefaultBrush"/>
                     <SolidColorBrush x:Key="AppTitleBarForegroundBrush" Color="White"/>
                     <StaticResource x:Key="GridCardBackgroundBrush" ResourceKey="CardBackgroundFillColorSecondaryBrush"/>
+                    <SolidColorBrush x:Key="ThemeSwitchForegroundBrush" Color="#707070"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="HighContrast">
@@ -45,15 +47,16 @@
                     <StaticResource x:Key="RootPageBackgroundBrush" ResourceKey="LayerFillColorDefaultBrush"/>
                     <SolidColorBrush x:Key="AppTitleBarForegroundBrush" Color="Black"/>
                     <SolidColorBrush x:Key="GridCardBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
+                    <SolidColorBrush x:Key="ThemeSwitchForegroundBrush" Color="#707070"/>
                 </ResourceDictionary>
 
-                <ResourceDictionary x:Key="Default">
+                <!--<ResourceDictionary x:Key="Default">
                     <SolidColorBrush x:Key="AppTitleBarPreviewForegroundBrush" Color="#949494"/>
                     <SolidColorBrush x:Key="AppTitleBarPreviewInactiveForegroundBrush" Color="#525252"/>
                     <StaticResource x:Key="RootPageBackgroundBrush" ResourceKey="LayerFillColorDefaultBrush"/>
                     <SolidColorBrush x:Key="AppTitleBarForegroundBrush" Color="White"/>
                     <SolidColorBrush x:Key="GridCardBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
-                </ResourceDictionary>
+                </ResourceDictionary>-->
             </ResourceDictionary.ThemeDictionaries>
 
             <!-- L-Pattern Overwriting resources -->

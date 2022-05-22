@@ -414,26 +414,56 @@ namespace Presenter
             NavigationViewControl_Navigate("settings_page", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
         }
 
-        private void ThemeButton_Click(object sender, RoutedEventArgs e)
+        private void ThemeButtonFlyout_Click(object sender, RoutedEventArgs e)
         {
-            // Change ThemeButton corresponding to ThemeDetailText
-            // TODO: Sync ThemeDetailText with current Theme status
-            if (ThemeDetailText.Text == "Dunkel")
-            {
-                this.RequestedTheme = ElementTheme.Light;
-                ThemeDetailText.Text = "Hell";
-                ThemeFontIcon.Glyph = "\ue706";
-            }
-            else
-            {
-                this.RequestedTheme = ElementTheme.Dark;
-                ThemeDetailText.Text = "Dunkel";
-                ThemeFontIcon.Glyph = "\ue708";
-            }
+            var menuFlyoutItem = (MenuFlyoutItem)sender;
 
+            switch (menuFlyoutItem?.Tag?.ToString())
+            {
+                case "dark_mode": { ThemeHelper.Theme = ElementTheme.Dark; break; }
+                case "light_mode": { ThemeHelper.Theme = ElementTheme.Light; break; }
+                case "system_mode": { ThemeHelper.Theme = ElementTheme.Default; break; }
+            }
         }
 
-        private void CtrlF_Invoked()
+        public void UpdateThemeButton(ElementTheme theme)
+        {
+            switch (theme)
+            {
+                case ElementTheme.Light:
+                    {
+                        ThemeDetailText.Text = "Hell";
+                        ThemeFontIcon.Glyph = "\ue706";
+                        break;
+                    }
+
+                case ElementTheme.Dark:
+                    {
+                        ThemeDetailText.Text = "Dunkel";
+                        ThemeFontIcon.Glyph = "\ue708";
+                        break;
+                    }
+
+                case ElementTheme.Default:
+                    {
+                        // Get System Theme information
+                        if(ThemeHelper.AppTheme == ElementTheme.Dark)
+                        {
+                            // Dark mode - set by system
+                            ThemeFontIcon.Glyph = "\ue708";
+                        }
+                        else
+                        {
+                            // System mode - set by system
+                            ThemeFontIcon.Glyph = "\ue706";
+                        }
+                        ThemeDetailText.Text = "System";
+                        break;
+                    }
+            }
+        }
+
+        public void CtrlF_Invoked()
         {
             // Open the NavigationViewControl Pane if it is collapsed
             NavigationViewControl.IsPaneOpen = true;

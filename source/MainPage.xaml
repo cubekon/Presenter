@@ -179,16 +179,23 @@
                 <StackPanel x:Name="NavigationViewFooterStack" Orientation="Vertical">
                     <StackPanel x:Name="SettingsThemeStack" Orientation="Horizontal">
                         <ToggleButton x:Name="SettingsButton" Margin="12,0,15,5" Padding="12,7,20,7" Background="Transparent" BorderBrush="Transparent" Click="SettingsButton_Click">
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <FontIcon FontFamily="{StaticResource FluentIconsFont}" Glyph="&#xE713;"/>
-                                <TextBlock Text="Einstellungen"/>
+                            <StackPanel x:Name="SettingsButtonStack" Orientation="Horizontal" Spacing="10">
+                                <FontIcon x:Name="SettingsFontIcon" FontFamily="{StaticResource FluentIconsFont}" Glyph="&#xE713;"/>
+                                <TextBlock x:Name="SettingsText" Text="Einstellungen"/>
                             </StackPanel>
                         </ToggleButton>
-                        <Button x:Name="ThemeButton" Margin="4,0,15,5" Padding="7,6,7,6" Grid.Column="1" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent" Click="ThemeButton_Click">
+                        <Button x:Name="ThemeButton" Margin="4,0,15,5" Padding="7,6,7,6" Grid.Column="1" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent">
                             <StackPanel x:Name="ThemeButtonStack" Spacing="5" Orientation="Horizontal">
-                                <FontIcon x:Name="ThemeFontIcon" FontFamily="{StaticResource FluentIconsFont}" Foreground="#707070" Glyph="&#xe708;"/>
+                                <FontIcon x:Name="ThemeFontIcon" FontFamily="{StaticResource FluentIconsFont}" Foreground="{ThemeResource ThemeSwitchForegroundBrush}" Glyph="&#xe708;"/>
                                 <TextBlock x:Name="ThemeDetailText" Text="Dunkel" FontSize="10" Foreground="{Binding ElementName=ThemeFontIcon, Path=Foreground}"/>
                             </StackPanel>
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="Dunkel" Tag="dark_mode" Click="ThemeButtonFlyout_Click"/>
+                                    <MenuFlyoutItem Text="Hell" Tag="light_mode" Click="ThemeButtonFlyout_Click"/>
+                                    <MenuFlyoutItem Text="System" Tag="system_mode" Click="ThemeButtonFlyout_Click"/>
+                                </MenuFlyout>
+                            </Button.Flyout>
                         </Button>
                     </StackPanel>
                 </StackPanel>

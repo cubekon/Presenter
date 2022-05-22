@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Presenter.Helper;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -41,6 +43,7 @@ namespace Presenter
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
+
             // App-Initialisierung nicht wiederholen, wenn das Fenster bereits Inhalte enthält.
             // Nur sicherstellen, dass das Fenster aktiv ist.
             if (rootFrame == null)
@@ -71,6 +74,8 @@ namespace Presenter
                 // Sicherstellen, dass das aktuelle Fenster aktiv ist
                 Window.Current.Activate();
             }
+
+            ThemeHelper.Initialize();
         }
 
         /// <summary>
@@ -95,6 +100,16 @@ namespace Presenter
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Anwendungszustand speichern und alle Hintergrundaktivitäten beenden
             deferral.Complete();
+        }
+
+        public static TEnum GetEnum<TEnum>(string text) where TEnum : struct
+        {
+            // Parse string to enum
+            if (!typeof(TEnum).GetTypeInfo().IsEnum)
+            {
+                throw new InvalidOperationException("Generic parameter is not an enum!");
+            }
+            return (TEnum)Enum.Parse(typeof(TEnum), text);
         }
     }
 }
