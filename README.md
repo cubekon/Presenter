@@ -36,6 +36,10 @@ Eine Open Source Präsentationssoftware speziell für Kirchengemeinden
 
 [XAML-Designressourcen - Themes](https://docs.microsoft.com/de-de/windows/apps/design/style/xaml-theme-resources)
 
+## Microsoft absolute beginner series (Video) ##
+[UWP Verwendung von VisualStateManager / Adaptive Triggers](https://docs.microsoft.com/de-de/shows/windows-10-development-for-absolute-beginners/uwp-037-utilizing-visualstatemanager-to-create-adaptive-triggers)
+[UWP Datenbindung an das GridView und ListView Steuerelement](https://docs.microsoft.com/de-de/shows/windows-10-development-for-absolute-beginners/uwp-040-data-binding-to-gridview-listview-controls)
+
 ## GitHub Links
 [Windows task snippets](https://github.com/Microsoft/Windows-task-snippets)
 

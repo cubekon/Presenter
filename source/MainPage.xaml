@@ -21,17 +21,17 @@
                             <StaticResource x:Key="NavigationViewContentBackground" ResourceKey="LayerFillColorDefaultBrush"/>
                             <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent"/>
                         </ResourceDictionary>
-                        
+
                         <ResourceDictionary x:Key="Dark">
                             <StaticResource x:Key="NavigationViewContentBackground" ResourceKey="LayerFillColorDefaultBrush"/>
                             <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent"/>
                         </ResourceDictionary>
-                        
+
                         <ResourceDictionary x:Key="HighContrast">
                             <SolidColorBrush x:Key="NavigationViewContentBackground" Color="{ThemeResource SystemColorWindowColor}" />
                             <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="{ThemeResource SystemColorWindowColor}" />
                         </ResourceDictionary>
-                        
+
                     </ResourceDictionary.ThemeDictionaries>
 
                 </ResourceDictionary>
@@ -84,12 +84,16 @@
                              ItemInvoked="NavigationViewControl_ItemInvoked"
                              BackRequested="NavigationViewControl_BackRequested"
                              DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
+                             PaneClosing="NavigationViewControl_PaneClosing" 
+                             PaneOpening="NavigationViewControl_PaneOpening"
                              IsBackButtonVisible="Visible"
+                             IsSettingsVisible="False"
                              IsTabStop="True"
                              PaneTitle="{StaticResource NavigationTitle}"
-                             OpenPaneLength="260"
+                             OpenPaneLength="280"
+                             CompactPaneLength="52"
                              CompactModeThresholdWidth="520"
-                             ExpandedModeThresholdWidth="820"
+                             ExpandedModeThresholdWidth="850"
                              IsTitleBarAutoPaddingEnabled="False">
 
             <!-- Content Frame Background -->
@@ -136,14 +140,30 @@
 
                 <muxc:NavigationViewItemHeader Content="Programmablauf"/>
 
-                <muxc:NavigationViewItem Content="Allgemeingesang" ToolTipService.ToolTip="Document options" SelectsOnInvoked="False">
+                <muxc:NavigationViewItem Content="Allgemeingesang" SelectsOnInvoked="False">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC4F;"/>
                     </muxc:NavigationViewItem.Icon>
 
                     <muxc:NavigationViewItem.MenuItems>
-                        <muxc:NavigationViewItem Content="Create new" Icon="NewFolder" ToolTipService.ToolTip="Create new" Tag="SamplePage5"/>
-                        <muxc:NavigationViewItem Content="Upload file" Icon="OpenLocal" ToolTipService.ToolTip="Upload file" Tag="SamplePage6"/>
+                        <muxc:NavigationViewItem x:Name="Song1" Tag="song_1">
+                            <muxc:NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource FluentIconsFont}" Glyph="&#xe90b;"/>
+                            </muxc:NavigationViewItem.Icon>
+                            <muxc:NavigationViewItem.Content>
+                                <TextBlock Text="Mit Macht und Herrlichkeit - Violin Heart" TextTrimming="CharacterEllipsis"/>
+                            </muxc:NavigationViewItem.Content>
+                        </muxc:NavigationViewItem>
+
+                        <muxc:NavigationViewItem x:Name="Song2" Tag="song_2">
+                            <muxc:NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource FluentIconsFont}" Glyph="&#xe90b;"/>
+                            </muxc:NavigationViewItem.Icon>
+                            <muxc:NavigationViewItem.Content>
+                                <TextBlock x:Name="SongText2" Text="Für unser Land - Miroslav Chrobak" TextTrimming="CharacterEllipsis"/>
+                            </muxc:NavigationViewItem.Content>
+                        </muxc:NavigationViewItem>
+
                     </muxc:NavigationViewItem.MenuItems>
                 </muxc:NavigationViewItem>
 
@@ -151,16 +171,29 @@
 
             <muxc:NavigationView.Content>
                 <ScrollViewer>
-                    <Frame x:Name="ContentFrame" Padding="0" Margin="20,15,20,15" IsTabStop="True" NavigationFailed="ContentFrame_NavigationFailed" d:Content="{local:PageHeader}"/>
+                    <Frame x:Name="ContentFrame" Padding="0" Margin="20,15,20,15" IsTabStop="True" NavigationFailed="ContentFrame_NavigationFailed" d:Content="{local:PageHeader}" Navigated="ContentFrame_Navigated"/>
                 </ScrollViewer>
             </muxc:NavigationView.Content>
+
+            <muxc:NavigationView.PaneFooter>
+                <StackPanel x:Name="NavigationViewFooterStack" Orientation="Vertical">
+                    <StackPanel x:Name="SettingsThemeStack" Orientation="Horizontal">
+                        <ToggleButton x:Name="SettingsButton" Margin="12,0,15,5" Padding="12,7,20,7" Background="Transparent" BorderBrush="Transparent" Click="SettingsButton_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon FontFamily="{StaticResource FluentIconsFont}" Glyph="&#xE713;"/>
+                                <TextBlock Text="Einstellungen"/>
+                            </StackPanel>
+                        </ToggleButton>
+                        <Button x:Name="ThemeButton" Margin="4,0,15,5" Padding="7,6,7,6" Grid.Column="1" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent" Click="ThemeButton_Click">
+                            <StackPanel x:Name="ThemeButtonStack" Spacing="5" Orientation="Horizontal">
+                                <FontIcon x:Name="ThemeFontIcon" FontFamily="{StaticResource FluentIconsFont}" Foreground="#707070" Glyph="&#xe708;"/>
+                                <TextBlock x:Name="ThemeDetailText" Text="Dunkel" FontSize="10" Foreground="{Binding ElementName=ThemeFontIcon, Path=Foreground}"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </muxc:NavigationView.PaneFooter>
+
         </muxc:NavigationView>
-
-
-        <!-- TODO: Fixing Tooltip on Page hover -->
-        <!-- Search Engine Shortcut -->
-        <!--<Grid.KeyboardAccelerators>
-            <KeyboardAccelerator Modifiers="Control" Key="F" Invoked="CtrlF_Invoked"/>
-        </Grid.KeyboardAccelerators>-->
     </Grid>
 </Page>

@@ -74,7 +74,7 @@
             <x:String x:Key="NavItemSongs">Lieder</x:String>
             <x:String x:Key="NavItemPictures">Bilder</x:String>
             <x:String x:Key="NavItemPowerPoint">PowerPoint</x:String>
-            <x:String x:Key="SettingsHeader">Einstellungen</x:String>
+            <x:String x:Key="NavItemSettings">Einstellungen</x:String>
 
             <!-- Command Bar Strings -->
             <x:String x:Key="CommandBarAdd">Hinzufügen</x:String>
@@ -88,6 +88,8 @@
 
             <!--Fonts-->
             <FontFamily x:Key="PowerPointFont">ms-appx:///Assets/Fonts/powerpoint-icons.ttf#Fabric MDL2 Assets</FontFamily>
+            <!-- Support Windows 10 -->
+            <FontFamily x:Key="FluentIconsFont">ms-appx:///Assets/Fonts/Segoe Fluent Icons.ttf#Segoe Fluent Icons</FontFamily>
 
             <!--Shapes-->
             <CornerRadius x:Key="ControlCornerRadius">8</CornerRadius>

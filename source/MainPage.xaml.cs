@@ -25,6 +25,7 @@ using Presenter.Helper;
 
 using muxc = Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
+using Presenter.Extensions;
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x407 dokumentiert.
 namespace Presenter
 {
@@ -37,7 +38,8 @@ namespace Presenter
         public static MainPage Current;
         public static Frame MainFrame = null;
 
-        private double NavigationViewControlCompactModeThresholdWidth { get { return NavigationViewControl.CompactModeThresholdWidth; } }
+        // Binding for XAML AdaptiveTrigger
+        //private double NavigationViewControlCompactModeThresholdWidth { get { return NavigationViewControl.CompactModeThresholdWidth; } }
 
         // Custom Title Bar
         private CoreApplicationViewTitleBar coreTitleBar;
@@ -87,7 +89,27 @@ namespace Presenter
 
             Current = this;
 
+            Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated += WindowKeyboardHook;
+
             this.Loaded += MainPage_Loaded;
+        }
+
+        private void WindowKeyboardHook(CoreDispatcher sender, AcceleratorKeyEventArgs args)
+        {
+            if (args.EventType.ToString().Contains("Down"))
+            {
+                // Capture STRG + F Keystrokes on the DOWN Event
+                var strg = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
+                if (strg.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    switch (args.VirtualKey)
+                    {
+                        case VirtualKey.F:
+                            CtrlF_Invoked();
+                            break;
+                    }
+                }
+            }
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -95,7 +117,7 @@ namespace Presenter
             UpdateTitleBarDragArea();
         }
 
-        #region Custom Title Bar Events
+        #region Custom Title Bar Events / Functions
         private void CoreWindow_Activated(CoreWindow sender, WindowActivatedEventArgs args)
         {
             // Change App Bar Background and Foreground color when window loses focus | match system colors
@@ -133,10 +155,27 @@ namespace Presenter
             //LeftPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayLeftInset);
             //RightPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayRightInset);
         }
+
+        private void UpdateTitleBarDragArea()
+        {
+            if (MainPage.Current.PageHeader != null)
+            {
+                if (NavigationViewControl.DisplayMode == muxc.NavigationViewDisplayMode.Minimal)
+                {
+                    //Resources["NavigationViewHeaderMargin"] = new Thickness(30, 15, 0, 0);
+                    MainPage.Current.AppTitleBar.Margin = new Thickness(80, 0, 0, 0);
+                }
+                else
+                {
+                    //Resources["NavigationViewHeaderMargin"] = new Thickness(0, 15, 0, 0);
+                    MainPage.Current.AppTitleBar.Margin = new Thickness(48, 0, 0, 0);
+                    //MainPage.Current.PageHeader.Margin = new Thickness(0,15,0,0);
+                }
+            }
+        }
         #endregion
 
-        #region Navigation Event/ Methods
-
+        #region Navigation Events / Functions
         private void OnPaneDisplayModeChanged(DependencyObject sender, DependencyProperty dp)
         {
             var navigationView = sender as muxc.NavigationView;
@@ -161,9 +200,6 @@ namespace Presenter
 
         private void NavigationViewControl_Loaded(object sender, RoutedEventArgs e)
         {
-            // Add handler for ContentFrame navigation.
-            ContentFrame.Navigated += On_Navigated;
-
             // NavigationViewControl doesn't load any page by default, so load home page.
             NavigationViewControl.SelectedItem = NavigationViewControl.MenuItems[0];
             // If navigation occurs on SelectionChanged, this isn't needed.
@@ -274,18 +310,21 @@ namespace Presenter
             return true;
         }
 
-        private void On_Navigated(object sender, NavigationEventArgs e)
+        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
         {
             NavigationViewControl.IsBackEnabled = ContentFrame.CanGoBack;
 
             if (ContentFrame.SourcePageType == typeof(SettingsPage))
             {
                 // SettingsItem is not part of NavigationViewControl.MenuItems, and doesn't have a Tag.
-                NavigationViewControl.SelectedItem = (muxc.NavigationViewItem)NavigationViewControl.SettingsItem;
-                NavigationViewControl.Header = (string)Application.Current.Resources["SettingsHeader"];
+                NavigationViewControl.SelectedItem = null;
+                NavigationViewControl.Header = (string)Application.Current.Resources["NavItemSettings"];
             }
             else if (ContentFrame.SourcePageType != null)
             {
+                // Unselect SettingsButton if previously selected
+                if (SettingsButton.IsChecked == true) SettingsButton.IsChecked = false;
+
                 var item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
 
                 NavigationViewControl.SelectedItem = NavigationViewControl.MenuItems
@@ -296,41 +335,111 @@ namespace Presenter
                     ((muxc.NavigationViewItem)NavigationViewControl.SelectedItem)?.Content?.ToString();
             }
         }
-        #endregion
-
-        private void CtrlF_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-        {
-            // Open the Pane in case the navwie is collapsed
-            NavigationViewControl.IsPaneOpen = true;
-
-            this.GlobalSearch.Focus(FocusState.Programmatic);
-        }
 
         private void NavigationViewControl_DisplayModeChanged(muxc.NavigationView sender, muxc.NavigationViewDisplayModeChangedEventArgs args)
         {
             var navigationView = sender;
             Debug.WriteLine(sender.DisplayMode);
             MainPage.Current.AppTitle.Visibility = navigationView.DisplayMode == muxc.NavigationViewDisplayMode.Minimal ? Visibility.Collapsed : Visibility.Visible;
+            MainPage.Current.AppTitlePreview.Visibility = MainPage.Current.AppTitle.Visibility;
 
             UpdateTitleBarDragArea();
+            UpdateSettingsThemeStack();
         }
 
-        private void UpdateTitleBarDragArea()
+        private void NavigationViewControl_PaneClosing(muxc.NavigationView sender, muxc.NavigationViewPaneClosingEventArgs args)
         {
-            if (MainPage.Current.PageHeader != null)
+            UpdateSettingsThemeStack();
+        }
+
+        private void NavigationViewControl_PaneOpening(muxc.NavigationView sender, object args)
+        {
+            UpdateSettingsThemeStack();
+        }
+
+        private void UpdateSettingsThemeStack()
+        {
+            // Change the orientation of ThemeButtonStack depending on the pane status
+            if (NavigationViewControl.IsPaneOpen)
             {
-                if (NavigationViewControl.DisplayMode == muxc.NavigationViewDisplayMode.Minimal)
-                {
-                    //Resources["NavigationViewHeaderMargin"] = new Thickness(30, 15, 0, 0);
-                    MainPage.Current.AppTitleBar.Margin = new Thickness(80, 0, 0, 0);
-                }
-                else
-                {
-                    //Resources["NavigationViewHeaderMargin"] = new Thickness(0, 15, 0, 0);
-                    MainPage.Current.AppTitleBar.Margin = new Thickness(48, 0, 0, 0);
-                    //MainPage.Current.PageHeader.Margin = new Thickness(0,15,0,0);
-                }
+                // if Pane open
+                SettingsThemeStack.Orientation = Orientation.Horizontal;
+                ThemeButtonStack.Orientation = Orientation.Horizontal;
+                ThemeButtonStack.Spacing = 7;
+
+                SettingsThemeStack.Spacing = 18;
+
+                // Reverse children order in StackPanel if first children is the ThemeButton
+                if (SettingsThemeStack.Children[0].GetType() != typeof(ToggleButton))
+                    SettingsThemeStack.Children.ReverseChildren();
+
+                // Optimize for Horizontal Layout
+                SettingsButton.Margin = new Thickness(5, 0, 15, 5);
+                SettingsButton.Padding = new Thickness(10, 7, 15, 7);
+
+                ThemeButton.Margin = new Thickness(4, 0, 15, 5);
+                ThemeButton.Padding = new Thickness(7, 6, 7, 6);
+
+                // Prevent button shrinkage
+                ThemeButton.MinWidth = 82;
+            }
+            else
+            {
+                // if Pane closed
+                SettingsThemeStack.Orientation = Orientation.Vertical;
+                ThemeButtonStack.Orientation = Orientation.Vertical;
+                ThemeButtonStack.Spacing = 4;
+
+                SettingsThemeStack.Spacing = 3;
+
+                // Reverse children order in StackPanel if first children is the SettingsButton
+                if (SettingsThemeStack.Children[0].GetType() == typeof(ToggleButton))
+                    SettingsThemeStack.Children.ReverseChildren();
+
+                // Optimize for Vertical Layout
+                SettingsButton.Margin = new Thickness(5, 0, 5, 5);
+                SettingsButton.Padding = new Thickness(10, 7, 0, 7);
+
+                ThemeButton.Margin = new Thickness(5, 0, 5, 5);
+                ThemeButton.Padding = new Thickness(5, 6, 5, 6);
+
+                // Prevent button shrinkage
+                ThemeButton.MinWidth = 43;
             }
         }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsButton.IsChecked = true;
+            NavigationViewControl_Navigate("settings_page", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
+        }
+
+        private void ThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Change ThemeButton corresponding to ThemeDetailText
+            // TODO: Sync ThemeDetailText with current Theme status
+            if (ThemeDetailText.Text == "Dunkel")
+            {
+                this.RequestedTheme = ElementTheme.Light;
+                ThemeDetailText.Text = "Hell";
+                ThemeFontIcon.Glyph = "\ue706";
+            }
+            else
+            {
+                this.RequestedTheme = ElementTheme.Dark;
+                ThemeDetailText.Text = "Dunkel";
+                ThemeFontIcon.Glyph = "\ue708";
+            }
+
+        }
+
+        private void CtrlF_Invoked()
+        {
+            // Open the NavigationViewControl Pane if it is collapsed
+            NavigationViewControl.IsPaneOpen = true;
+
+            this.GlobalSearch.Focus(FocusState.Programmatic);
+        }
+        #endregion
     }
 }

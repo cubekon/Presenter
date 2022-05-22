@@ -121,6 +121,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\LayoutExtensions.cs" />
     <Compile Include="Helper\UIHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -223,6 +224,7 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <Content Include="Assets\Fonts\powerpoint-icons.ttf" />
+    <Content Include="Assets\Fonts\Segoe Fluent Icons.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
