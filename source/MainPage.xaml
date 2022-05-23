@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Presenter"
+    xmlns:controls="using:Presenter.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -52,7 +53,7 @@
                 Background="Transparent"
                 Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
                 Canvas.ZIndex="1"
-                Margin="48,0,0,0">
+                Margin="52,0,0,0">
             <StackPanel Orientation="Horizontal" Spacing="4">
                 <!--<Image x:Name="AppFontIcon"
                     HorizontalAlignment="Left" 
@@ -63,13 +64,14 @@
                 <TextBlock x:Name="AppTitle"
                     Text="{StaticResource AppTitle}"
                     VerticalAlignment="Center"
+                           Margin="0,-8,0,0"
                     Foreground="{ThemeResource AppTitleBarForegroundBrush}"
                     Style="{StaticResource CaptionTextBlockStyle}" />
                 <TextBlock x:Name="AppTitlePreview"
                     Text="{StaticResource AppTitlePreview}"
                     Foreground="{ThemeResource AppTitleBarPreviewForegroundBrush}"
                     FontSize="10"
-                    Margin="0,1,0,0"
+                    Margin="0,-7,0,0"
                     FontWeight="Normal"
                     VerticalAlignment="Center"/>
             </StackPanel>
@@ -178,12 +180,12 @@
             <muxc:NavigationView.PaneFooter>
                 <StackPanel x:Name="NavigationViewFooterStack" Orientation="Vertical">
                     <StackPanel x:Name="SettingsThemeStack" Orientation="Horizontal">
-                        <ToggleButton x:Name="SettingsButton" Margin="12,0,15,5" Padding="12,7,20,7" Background="Transparent" BorderBrush="Transparent" Click="SettingsButton_Click">
+                        <controls:LockableToggleButton x:Name="SettingsButton" LockToggle="True" CornerRadius="8" Margin="12,0,15,5" Padding="12,7,20,7" Background="Transparent" BorderBrush="Transparent" Click="SettingsButton_Click">
                             <StackPanel x:Name="SettingsButtonStack" Orientation="Horizontal" Spacing="10">
                                 <FontIcon x:Name="SettingsFontIcon" FontFamily="{StaticResource FluentIconsFont}" Glyph="&#xE713;"/>
                                 <TextBlock x:Name="SettingsText" Text="Einstellungen"/>
                             </StackPanel>
-                        </ToggleButton>
+                        </controls:LockableToggleButton>
                         <Button x:Name="ThemeButton" Margin="4,0,15,5" Padding="7,6,7,6" Grid.Column="1" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent">
                             <StackPanel x:Name="ThemeButtonStack" Spacing="5" Orientation="Horizontal">
                                 <FontIcon x:Name="ThemeFontIcon" FontFamily="{StaticResource FluentIconsFont}" Foreground="{ThemeResource ThemeSwitchForegroundBrush}" Glyph="&#xe708;"/>

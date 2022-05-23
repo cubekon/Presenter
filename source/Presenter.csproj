@@ -121,6 +121,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\LockableToggleButton.cs" />
     <Compile Include="Extensions\LayoutExtensions.cs" />
     <Compile Include="Helper\ThemeHelper.cs" />
     <Compile Include="Helper\UIHelper.cs" />

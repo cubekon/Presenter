@@ -24,28 +24,25 @@
             -->
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="AppTitleBarPreviewForegroundBrush" Color="#949494"/>
-                    <SolidColorBrush x:Key="AppTitleBarPreviewInactiveForegroundBrush" Color="#525252"/>
-                    <StaticResource x:Key="RootPageBackgroundBrush" ResourceKey="LayerFillColorDefaultBrush"/>
                     <SolidColorBrush x:Key="AppTitleBarForegroundBrush" Color="Black"/>
+                    <SolidColorBrush x:Key="AppTitleBarPreviewForegroundBrush" Color="#949494"/>
+                    <StaticResource x:Key="RootPageBackgroundBrush" ResourceKey="LayerFillColorDefaultBrush"/>
                     <StaticResource x:Key="GridCardBackgroundBrush" ResourceKey="SolidBackgroundFillColorBaseBrush"/>
                     <SolidColorBrush x:Key="ThemeSwitchForegroundBrush" Color="#707070"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="AppTitleBarPreviewForegroundBrush" Color="#949494"/>
-                    <SolidColorBrush x:Key="AppTitleBarPreviewInactiveForegroundBrush" Color="#525252"/>
-                    <StaticResource x:Key="RootPageBackgroundBrush" ResourceKey="LayerFillColorDefaultBrush"/>
                     <SolidColorBrush x:Key="AppTitleBarForegroundBrush" Color="White"/>
+                    <SolidColorBrush x:Key="AppTitleBarPreviewForegroundBrush" Color="#949494"/>
+                    <StaticResource x:Key="RootPageBackgroundBrush" ResourceKey="LayerFillColorDefaultBrush"/>
                     <StaticResource x:Key="GridCardBackgroundBrush" ResourceKey="CardBackgroundFillColorSecondaryBrush"/>
                     <SolidColorBrush x:Key="ThemeSwitchForegroundBrush" Color="#707070"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="HighContrast">
-                    <SolidColorBrush x:Key="AppTitleBarPreviewForegroundBrush" Color="#949494"/>
-                    <SolidColorBrush x:Key="AppTitleBarPreviewInactiveForegroundBrush" Color="#525252"/>
-                    <StaticResource x:Key="RootPageBackgroundBrush" ResourceKey="LayerFillColorDefaultBrush"/>
                     <SolidColorBrush x:Key="AppTitleBarForegroundBrush" Color="Black"/>
+                    <SolidColorBrush x:Key="AppTitleBarPreviewForegroundBrush" Color="#949494"/>
+                    <StaticResource x:Key="RootPageBackgroundBrush" ResourceKey="LayerFillColorDefaultBrush"/>
                     <SolidColorBrush x:Key="GridCardBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
                     <SolidColorBrush x:Key="ThemeSwitchForegroundBrush" Color="#707070"/>
                 </ResourceDictionary>
@@ -99,6 +96,7 @@
 
             <!-- App Title Bar inactive Foreground Color -->
             <SolidColorBrush x:Key="AppTitleBarInactiveForegroundBrush" Color="#8f8f8f"/>
+            <SolidColorBrush x:Key="AppTitleBarPreviewInactiveForegroundBrush" Color="#8f8f8f"/>
 
             <!--Gradients-->
             <LinearGradientBrush x:Key="HeroImageGradientBrush" StartPoint="0.5,0" EndPoint="0.5,1.5">

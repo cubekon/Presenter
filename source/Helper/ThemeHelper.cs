@@ -9,6 +9,7 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace Presenter.Helper
 {
@@ -145,10 +146,12 @@ namespace Presenter.Helper
             if (ThemeHelper.IsDarkTheme())
             {
                 titleBar.ButtonForegroundColor = Colors.White;
+                ((SolidColorBrush)Application.Current.Resources["AppTitleBarForegroundBrush"]).Color = Colors.White;
             }
             else
             {
                 titleBar.ButtonForegroundColor = Colors.Black;
+                ((SolidColorBrush)Application.Current.Resources["AppTitleBarForegroundBrush"]).Color = Colors.Black;
             }
         }
     }

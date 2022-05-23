@@ -26,6 +26,7 @@ using Presenter.Helper;
 using muxc = Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Presenter.Extensions;
+using Presenter.Controls;
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x407 dokumentiert.
 namespace Presenter
 {
@@ -131,8 +132,6 @@ namespace Presenter
             {
                 AppTitle.Foreground = (SolidColorBrush)Application.Current.Resources["AppTitleBarForegroundBrush"];
                 AppTitlePreview.Foreground = (SolidColorBrush)Application.Current.Resources["AppTitleBarPreviewForegroundBrush"];
-
-                AppTitleBar.Background = new SolidColorBrush(Colors.Transparent);
             }
         }
 
@@ -176,13 +175,6 @@ namespace Presenter
         #endregion
 
         #region Navigation Events / Functions
-        private void OnPaneDisplayModeChanged(DependencyObject sender, DependencyProperty dp)
-        {
-            var navigationView = sender as muxc.NavigationView;
-            MainPage.Current.AppTitleBar.Visibility = navigationView.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top ? Visibility.Collapsed : Visibility.Visible;
-        }
-
-
         private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
@@ -370,7 +362,7 @@ namespace Presenter
                 SettingsThemeStack.Spacing = 18;
 
                 // Reverse children order in StackPanel if first children is the ThemeButton
-                if (SettingsThemeStack.Children[0].GetType() != typeof(ToggleButton))
+                if (SettingsThemeStack.Children[0].GetType() != typeof(LockableToggleButton))
                     SettingsThemeStack.Children.ReverseChildren();
 
                 // Optimize for Horizontal Layout
@@ -393,7 +385,7 @@ namespace Presenter
                 SettingsThemeStack.Spacing = 3;
 
                 // Reverse children order in StackPanel if first children is the SettingsButton
-                if (SettingsThemeStack.Children[0].GetType() == typeof(ToggleButton))
+                if (SettingsThemeStack.Children[0].GetType() == typeof(LockableToggleButton))
                     SettingsThemeStack.Children.ReverseChildren();
 
                 // Optimize for Vertical Layout
@@ -410,7 +402,29 @@ namespace Presenter
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            SettingsButton.IsChecked = true;
+            // Collapse NavigationViewControl Pane if DisplayMode is Minimal or Compact
+            if (NavigationViewControl.DisplayMode != muxc.NavigationViewDisplayMode.Expanded)
+            {
+                if (NavigationViewControl.IsPaneOpen) NavigationViewControl.IsPaneOpen = false;
+            }
+
+            // Feature: go back to previous page when clicking again on the SettingsButton
+            if (SettingsButton.IsChecked == true)
+            {
+                // check if Navigation can go back -> if true unselect SettingsButton
+                if (TryGoBack() == true)
+                {
+                    SettingsButton.IsChecked = false;
+                    return;
+                }
+                // if not select the SettingsButton
+                else SettingsButton.IsChecked = true;
+            }
+            else
+            {
+                SettingsButton.IsChecked = true;
+            }
+
             NavigationViewControl_Navigate("settings_page", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
         }
 
