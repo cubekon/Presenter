@@ -27,7 +27,6 @@
                        Style="{StaticResource TitleTextBlockStyle}"
                        VerticalAlignment="Center"
                        FontSize="{Binding ElementName=headerControl, Path=FontSize}"
-                       Foreground="{Binding ElementName=headerControl, Path=Foreground}"
                        Text="{x:Bind Title, Mode=OneWay}"
                        d:Text="Header"
                        TextTrimming="CharacterEllipsis"
